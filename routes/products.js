@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { Router } = express;
 const upload = require('../middlewares/file');
 
@@ -8,7 +9,7 @@ const products = [];
 
 router.post("/", upload.single("thumbnail"), (req, res) => {
     const {title, price} = req.body;
-    const thumbnail = req.file.filename
+    const thumbnail = path.join(__dirname, "../public/img/" + req.file.filename)
     id +=1;
     products.push({id, title, price, thumbnail });
     res.status(201).send({id, title, price, thumbnail})
