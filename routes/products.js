@@ -1,16 +1,17 @@
-const route = require('color-convert/route');
 const express = require('express');
 const { Router } = express;
+const upload = require('../middlewares/file');
 
 const router = Router();
 let id = 0;
 const products = [];
 
-router.post("/", (req, res) => {
-    const {title, price, thumbnail} = req.body;
+router.post("/", upload.single("thumbnail"), (req, res) => {
+    const {title, price} = req.body;
+    const thumbnail = req.file.filename
     id +=1;
-    products.push({id, title, price, thumbnail});
-    res.status(201).send(JSON.stringify(id))
+    products.push({id, title, price, thumbnail });
+    res.status(201).send({id, title, price, thumbnail})
 })
 
 router.get("/", (req, res) => {
